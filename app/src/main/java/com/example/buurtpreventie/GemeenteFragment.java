@@ -8,9 +8,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.buurtpreventie.dummy.DummyContent;
 import com.example.buurtpreventie.dummy.DummyContent.DummyItem;
@@ -44,13 +48,30 @@ public class GemeenteFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_gemeente_list, container, false);
 
+        // Setup TextEdit
+
+        EditText gemeenteTextEdit = view.findViewById(R.id.et_gemeente_search);
+        gemeenteTextEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                onTextViewChange(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
+
         // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new MyGemeenteRecyclerViewAdapter(DummyContent.ITEMS, mListener));
-        }
+        Context context = view.getContext();
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.rv_gemeente_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(new MyGemeenteRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+
         return view;
     }
 
@@ -85,5 +106,21 @@ public class GemeenteFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(DummyItem item);
+    }
+
+    public void onTextViewChange(String text) {
+        Context context = getContext();
+        RecyclerView view = getView().findViewById(R.id.rv_gemeente_list);
+        if(view == null){
+            Toast.makeText(context, "isnull", Toast.LENGTH_LONG).show();
+        }
+        else {
+            Toast.makeText(context, text, Toast.LENGTH_LONG).show();
+        }
+        MyGemeenteRecyclerViewAdapter adapter = (MyGemeenteRecyclerViewAdapter) view.getAdapter();
+
+        DummyContent.generateNewItems(text.length());
+
+        adapter.notifyDataSetChanged();
     }
 }

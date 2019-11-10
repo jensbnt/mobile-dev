@@ -32,6 +32,13 @@ public class DummyContent {
         }
     }
 
+    public static void generateNewItems(int count) {
+        ITEMS.clear();
+        for (int i = 1; i <= count; i++) {
+            addItem(createDummyItem(i));
+        }
+    }
+
     private static void addItem(DummyItem item) {
         ITEMS.add(item);
         ITEM_MAP.put(item.id, item);

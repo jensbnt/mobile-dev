@@ -11,14 +11,9 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"/>
-
         <fragment
             android:name="com.example.buurtpreventie.GemeenteFragment"
-            android:id="@+id/gemeente_list"
+            android:id="@+id/f_gemeente_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
